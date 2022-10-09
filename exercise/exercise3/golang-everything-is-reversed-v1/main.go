@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 )
 
 func ReverseData(arr [5]int) [5]int {
@@ -9,27 +11,30 @@ func ReverseData(arr [5]int) [5]int {
 	for i := 0; i < len(arr); i++ {
 		final[i] += arr[len(arr)-i-1]
 		a := 0
+		fmt.Println("ebelum: ", final[i])
 		reversDigits(final[i], &a)
+		final[i] = a
+
 	}
 	return final // TODO: replace this
 }
 
 func reversDigits(num int, he *int) {
-	rev_num := 0
-	for i := 0; i < num; i++ {
-		if num == 10 {
-			rev_num = num / 10
-		} else {
-			rev_num = rev_num*10 + num%10
-			num = num / 10
-		}
-
+	revNum := strconv.Itoa(num)
+	fmt.Println("hai: ", revNum)
+	splitNum := strings.Split(revNum, "")
+	rest1 := ""
+	for i := 0; i < len(splitNum); i++ {
+		rest1 += splitNum[len(splitNum)-i-1]
 	}
-	*he = rev_num
+	output, _ := strconv.Atoi(rest1)
+	fmt.Println("kebalik harusnya: ", output)
+	*he = output
+	// *he = revNum
 }
 
 func main() {
-	data := [5]int{10, 10, 10, 10, 10}
+	data := [5]int{456789, 44332, 2221, 12, 10}
 
 	result := ReverseData(data)
 	fmt.Println(result)
