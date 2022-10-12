@@ -40,7 +40,6 @@ func GetDayDifference(date string) int {
 		}
 		count += int(days)
 	}
-	fmt.Println(count)
 	return count
 }
 
@@ -56,25 +55,59 @@ func changeFormatDate(d string) string {
 }
 
 func GetSalary(rangeDay int, data [][]string) map[string]string {
-	return nil // TODO: replace this
+	fmt.Println(rangeDay)
+	salary := 50000
+	r := map[string]string{}
+	temp := map[string]int{}
+	for i, a := range data {
+		for _, b := range a {
+			fmt.Println(rangeDay, b, i)
+			if i < rangeDay {
+				temp[b] += salary
+				fmt.Println(temp[b])
+				con := FormatRupiah(temp[b])
+				r[b] = con
+			}
+		}
+		fmt.Println("")
+	}
+	return r // TODO: replace this
 }
 
 func FormatRupiah(number int) string {
-	return ""
+	arrChange := strconv.Itoa(number)
+	splitChange := strings.Split(arrChange, "")
+	cResultReverse := ""
+	cResult := ""
+	count := 0
+	for i := 0; i < len(splitChange); i++ {
+		if count == 2 && i != (len(splitChange)-1) {
+			count = 0
+			cResultReverse += splitChange[len(splitChange)-i-1] + "."
+
+		} else {
+			count++
+			cResultReverse += splitChange[len(splitChange)-i-1]
+		}
+	}
+	result := strings.Split(cResultReverse, "")
+	for j := 0; j < len(result); j++ {
+		cResult += result[len(result)-j-1]
+	}
+
+	return fmt.Sprintf("Rp %s", cResult)
 }
 
 func GetSalaryOverview(dateRange string, data [][]string) map[string]string {
-	GetDayDifference(dateRange)
-	return nil
+	rangeDay := GetDayDifference(dateRange)
+	countSalary := GetSalary(rangeDay, data)
+	return countSalary
 }
 
 func main() {
-	res := GetSalaryOverview("25 February - 5 March 2020", [][]string{
-		{"andi", "Rojaki", "raji", "supri"},
-		{"andi", "Rojaki", "raji"},
-		{"andi", "raji", "supri"},
-		{"andi", "Rojaki", "raji", "supri"},
+	res := GetSalaryOverview("21 February - 22 February 2021", [][]string{
+		{"a", "b"},
+		{"a", "c"},
 	})
-
 	fmt.Println(res)
 }
