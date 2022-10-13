@@ -13,17 +13,12 @@ type Junior struct {
 }
 
 type Senior struct {
-	Name            string
-	BaseSalary      int
-	WorkingMonth    int
+	General         Junior
 	PerformanceRate float64
 }
 
 type Manager struct {
-	Name             string
-	BaseSalary       int
-	WorkingMonth     int
-	PerformanceRate  float64
+	General          Senior
 	BonusManagerRate float64
 }
 
@@ -32,9 +27,30 @@ func EmployeeBonus(employee Employee) float64 {
 }
 
 func TotalEmployeeBonus(employees []Employee) float64 {
-	return nil // TODO: replace this
+	fmt.Println(employees)
+	return 0.0 // TODO: replace this
 }
 
 func main() {
-	fmt.Println
+	Bonus := []Employee{
+		Junior{
+			Name:         "Della",
+			BaseSalary:   1000000,
+			WorkingMonth: 12,
+		},
+		Senior{
+			General.Name:         "Ledina",
+			General.BaseSalary:   100000,
+			General.WorkingMonth: 12,
+			PerformanceRate:      0.5,
+		},
+		Manager{
+			General.Name:            "Adelia",
+			General.BaseSalary:      100000,
+			General.WorkingMonth:    12,
+			General.PerformanceRate: 0.5,
+			BonusManagerRate:        0.5,
+		}
+	}
+	fmt.Println(Bonus)
 }
