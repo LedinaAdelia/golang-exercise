@@ -9,22 +9,26 @@ func NewCalculator(base float32) *Calculator {
 }
 
 func (c *Calculator) Add(num float32) {
-	// TODO: answer here
+	try := c.Base + num
+	c.Base = try
 }
 
 func (c *Calculator) Subtract(num float32) {
-	// TODO: answer here
+	try := c.Base - num
+	c.Base = try
 }
 
 func (c *Calculator) Multiply(num float32) {
-	// TODO: answer here
-
+	try := c.Base * num
+	c.Base = try
 }
 
 func (c *Calculator) Divide(num float32) {
-	// TODO: answer here
+	try := c.Base / num
+	c.Base = try
 }
 
 func (c *Calculator) Result() float32 {
-	return 0 // TODO: replace this
+	res := c.Base
+	return res
 }
