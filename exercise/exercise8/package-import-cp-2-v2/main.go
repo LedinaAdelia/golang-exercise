@@ -8,7 +8,7 @@ import (
 
 func CashierApp(db *database.Database) service.ServiceInterface {
 	service := service.NewService(db)
-
+	fmt.Println(db)
 	return service
 }
 

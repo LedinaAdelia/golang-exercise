@@ -3,6 +3,7 @@ package service
 import (
 	"a21hc3NpZ25tZW50/database"
 	"a21hc3NpZ25tZW50/entity"
+	"fmt"
 )
 
 // Service is package for any logic needed in this program
@@ -27,6 +28,7 @@ func NewService(database database.DatabaseInterface) *Service {
 }
 
 func (s *Service) AddCart(productName string, quantity int) error {
+	fmt.Println("hai")
 	return nil // TODO: replace this
 }
 
