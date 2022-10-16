@@ -3,7 +3,7 @@ package service
 import (
 	"a21hc3NpZ25tZW50/database"
 	"a21hc3NpZ25tZW50/entity"
-	"fmt"
+	"errors"
 )
 
 // Service is package for any logic needed in this program
@@ -28,12 +28,46 @@ func NewService(database database.DatabaseInterface) *Service {
 }
 
 func (s *Service) AddCart(productName string, quantity int) error {
-	fmt.Println("hai")
-	return nil // TODO: replace this
+	a, err := s.database.GetProductByname(productName)
+	if err != nil {
+		return err
+	}
+	if quantity < 1 {
+		return errors.New("invalid quantity")
+	}
+	cart, err := s.database.Load()
+	if err != nil {
+		return err
+	}
+	cart = append(cart, entity.CartItem{
+		ProductName: a.Name,
+		Price:       a.Price,
+		Quantity:    quantity,
+	})
+	return s.database.Save(cart)
 }
 
 func (s *Service) RemoveCart(productName string) error {
-	return nil // TODO: replace this
+	a, err := s.database.GetProductByname(productName)
+	try := false
+	if err != nil {
+		return err
+	}
+	cart, err := s.database.Load()
+	if err != nil {
+		return err
+	}
+	for i := 0; i < len(cart); i++ {
+		if cart[i].ProductName == a.Name {
+			cart[i] = cart[len(cart)-1]
+			try = true
+			return s.database.Save(cart[:len(cart)-1])
+		}
+	}
+	if try == false {
+		return errors.New("product not found")
+	}
+	return nil
 }
 
 func (s *Service) ShowCart() ([]entity.CartItem, error) {
@@ -41,18 +75,42 @@ func (s *Service) ShowCart() ([]entity.CartItem, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return carts, nil
 }
 
 func (s *Service) ResetCart() error {
-	return nil // TODO: replace this
+	cart, err := s.database.Load()
+	if err != nil {
+		return err
+	}
+	cart = nil
+	return s.database.Save(cart) // TODO: replace this
 }
 
 func (s *Service) GetAllProduct() ([]entity.Product, error) {
-	return nil, nil // TODO: replace this
+	list := database.NewDatabase().GetProductData()
+	return list, nil // TODO: replace this
 }
 
 func (s *Service) Paid(money int) (entity.PaymentInformation, error) {
-	return entity.PaymentInformation{}, nil // TODO: replace this
+	cart, err := s.database.Load()
+	total := 0
+	if err != nil {
+		return entity.PaymentInformation{}, err
+	}
+	for _, v := range cart {
+		total += v.Price * v.Quantity
+	}
+	change := money - total
+	zonk := entity.PaymentInformation{}
+	if change < 0 {
+		return zonk, errors.New("money is not enough")
+	}
+	try := entity.PaymentInformation{
+		ListProduct: cart,
+		TotalPrice:  total,
+		MoneyPaid:   money,
+		Change:      change,
+	}
+	return try, s.ResetCart() // TODO: replace this
 }

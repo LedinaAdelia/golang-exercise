@@ -8,7 +8,6 @@ import (
 
 func CashierApp(db *database.Database) service.ServiceInterface {
 	service := service.NewService(db)
-	fmt.Println(db)
 	return service
 }
 
@@ -19,11 +18,12 @@ func main() {
 
 	service.AddCart("Kaos Polos", 2)
 	service.AddCart("Kaos sablon", 1)
-
-	paymentInformation, err := service.Paid(500000)
+	service.AddCart("Celana hitam", 3)
+	fmt.Println(service.RemoveCart("Celana hitam"))
+	paymentInformation, err := service.Paid(5000000)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(paymentInformation)
+	fmt.Println("\n", paymentInformation)
 }
