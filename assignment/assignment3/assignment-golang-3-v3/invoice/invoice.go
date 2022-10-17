@@ -1,5 +1,7 @@
 package invoice
 
+import "errors"
+
 type InvoiceData struct {
 	Date         string
 	TotalInvoice float64
@@ -12,6 +14,10 @@ const (
 	Finance   DepartmentName = "finance"
 	Warehouse DepartmentName = "warehouse"
 	Marketing DepartmentName = "marketing"
+)
+
+var (
+	EmptyDateErr = errors.New("invoice date is empty")
 )
 
 type Invoice interface {

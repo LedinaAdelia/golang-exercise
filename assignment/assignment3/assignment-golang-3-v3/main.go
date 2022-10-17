@@ -6,9 +6,28 @@ import (
 	"log"
 )
 
-
 func RecapDataInvoice(data []invoice.Invoice) ([]invoice.InvoiceData, error) {
-	return nil, nil // TODO: replace this
+	output := []invoice.InvoiceData{}
+	for _, v := range data {
+		invoiceRecord, err := v.RecordInvoice()
+		if err != nil {
+			return nil, err
+		}
+		output = append(output, invoiceRecord)
+	}
+	temp := map[string]float64{}
+	try := invoice.InvoiceData{}
+	result := []invoice.InvoiceData{}
+	for _, v := range output {
+		if v.Departemen == "finance" {
+			temp[v.Date] += v.TotalInvoice
+			try.Date = v.Date
+			try.Departemen = v.Departemen
+			try.TotalInvoice = temp[v.Date]
+		}
+	}
+	result = append(result, try)
+	return result, nil // TODO: replace this
 }
 
 func main() {
@@ -28,16 +47,16 @@ func main() {
 		invoice.WarehouseInvoice{
 			Date: "01-February-2020",
 			Products: []invoice.Product{
-				{"product A", 10, 10000, 0.1},
-				{"product C", 5, 15000, 0.2},
+				{"product A", 2, 10000, 0.1},
+				{"product C", 3, 20000, 0.2},
 			},
 			InvoiceType: invoice.PURCHASE,
 			Approved:    true,
 		},
 		invoice.MarketingInvoice{
 			Date:        "01/02/2020",
-			StartDate:   "20/01/2020",
-			EndDate:     "25/01/2020",
+			StartDate:   "01/01/2022",
+			EndDate:     "03/01/2022",
 			Approved:    true,
 			PricePerDay: 10000,
 			AnotherFee:  5000,
