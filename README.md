@@ -1,2 +1,2 @@
 # **catatan della**
-## peran kevin = membantu della
+## terimakasih mas kevin bantuannya🥰🙏😘❣️
