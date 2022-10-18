@@ -1,0 +1,10 @@
+{
+    "name":"http-client-cp",
+    "course":"Dasar Pemrograman Backend",
+    "image":"golang-basic",
+    "command":"go test",
+    "totalTestCase":2,
+    "metadata":{
+        "type":"exercise"
+    }
+}
