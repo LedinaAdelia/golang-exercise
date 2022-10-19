@@ -69,7 +69,7 @@ func ClientPost() (Postman, error) {
 		log.Fatalln(err)
 	}
 	sb := string(body)
-	fmt.Println(sb)
+	_ = json.Unmarshal([]byte(sb), &new)
 
 	return new, err
 }
