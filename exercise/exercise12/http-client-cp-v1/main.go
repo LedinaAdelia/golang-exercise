@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 )
 
 type Animechan struct {
@@ -15,10 +13,10 @@ type Animechan struct {
 }
 
 func ClientGet() ([]Animechan, error) {
-	client := http.Client{}
+	// client := http.Client{}
 
 	// Hit API https://animechan.vercel.app/api/quotes/anime?title=naruto with method POST:
-	[]Animechan, nil // TODO: replace this
+	return []Animechan{}, nil // TODO: replace this
 }
 
 type data struct {
@@ -40,7 +38,7 @@ func ClientPost() (Postman, error) {
 	fmt.Println(responseBody)
 
 	// Hit API https://postman-echo.com/post with method POST:
-	Postman, nil // TODO: replace this
+	return Postman{}, nil // TODO: replace this
 }
 
 func main() {
