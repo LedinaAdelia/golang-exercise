@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
 )
 
 type Animechan struct {
@@ -13,10 +16,27 @@ type Animechan struct {
 }
 
 func ClientGet() ([]Animechan, error) {
-	// client := http.Client{}
+	var err error
+	var client = &http.Client{}
+	var data []Animechan
+	baseURL := "https://animechan.vercel.app/api/quotes/anime?title=naruto"
+	request, err := http.NewRequest("GET", baseURL, nil)
+	if err != nil {
+		return nil, err
+	}
 
-	// Hit API https://animechan.vercel.app/api/quotes/anime?title=naruto with method POST:
-	return []Animechan{}, nil // TODO: replace this
+	response, err := client.Do(request)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	err = json.NewDecoder(response.Body).Decode(&data)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, err
 }
 
 type data struct {
@@ -36,15 +56,36 @@ func ClientPost() (Postman, error) {
 	})
 	responseBody := bytes.NewBuffer(postBody)
 	fmt.Println(responseBody)
+	new := Postman{}
+	resp, err := http.Post("https://postman-echo.com/post", "application/json", responseBody)
 
-	// Hit API https://postman-echo.com/post with method POST:
-	return Postman{}, nil // TODO: replace this
+	if err != nil {
+		log.Fatalf("An Error Occured %v", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	sb := string(body)
+	fmt.Println(sb)
+
+	return new, err
 }
 
 func main() {
-	get, _ := ClientGet()
-	fmt.Println(get)
+	// get, err := ClientGet()
+	// if err != nil {
+	// 	fmt.Println("Error!", err.Error())
+	// 	return
+	// }
+	// fmt.Println(get)
 
-	post, _ := ClientPost()
+	post, err := ClientPost()
+	if err != nil {
+		fmt.Println("Error!", err.Error())
+		return
+	}
 	fmt.Println(post)
 }
