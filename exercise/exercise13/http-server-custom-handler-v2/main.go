@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 var Quotes = []string{
@@ -14,12 +15,14 @@ var Quotes = []string{
 	"Nothing is impossible, the word itself says 'I'm possible'! ― Audrey Hepburn",
 }
 
-type QuotesHandler struct {
-	Quote []string
-}
+type QuotesHandler struct{}
 
 func (qh QuotesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(qh)
+	rand.Seed(time.Now().Unix())
+	reasons := Quotes
+	n := rand.Int() % len(reasons)
+
+	w.Write([]byte(reasons[n]))
 }
 
 func main() {
