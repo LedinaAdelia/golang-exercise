@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -13,10 +14,12 @@ var Quotes = []string{
 	"Nothing is impossible, the word itself says 'I'm possible'! ― Audrey Hepburn",
 }
 
-// TODO: answer here
+type QuotesHandler struct {
+	Quote []string
+}
 
 func (qh QuotesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// TODO: answer here
+	fmt.Println(qh)
 }
 
 func main() {
