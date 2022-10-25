@@ -14,7 +14,7 @@ func AdminHandler() http.HandlerFunc {
 func RequestMethodGetMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "GET" {
-			w.WriteHeader(405)
+			w.WriteHeader(http.StatusMethodNotAllowed)
 			w.Write([]byte("Method is not allowed"))
 			return
 		}
@@ -24,9 +24,9 @@ func RequestMethodGetMiddleware(next http.Handler) http.Handler {
 
 func AdminMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		admin := r.URL.Query().Get("admin")
+		admin := r.Header.Get("role")
 		if admin != "ADMIN" {
-			w.WriteHeader(401)
+			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte("Role not authorized"))
 			return
 		}
