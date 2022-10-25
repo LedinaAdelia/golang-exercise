@@ -17,17 +17,37 @@ func IsNameExists(name string) bool {
 			return true
 		}
 	}
-
 	return false
 }
 
 func CheckStudentName() http.HandlerFunc {
-	return nil // TODO: replace this
+	return func(writer http.ResponseWriter, request *http.Request) {
+		// parameter
+		// body
+		name := request.URL.Query().Get("name")
+		check := IsNameExists(name)
+
+		if request.Method != "GET" {
+			a := "Method is not allowed"
+			writer.WriteHeader(405)
+			writer.Write([]byte(a))
+		} else if check == true {
+			a := "Name is exists"
+			writer.WriteHeader(200)
+			writer.Write([]byte(a))
+
+		} else if check == false {
+			a := "Data not found"
+			writer.WriteHeader(404)
+			writer.Write([]byte(a))
+		}
+	}
 }
 
 func GetMux() *http.ServeMux {
 	mux := http.NewServeMux()
-	// TODO: answer here
+	mux.Handle("/students", CheckStudentName())
+
 	return mux
 }
 
