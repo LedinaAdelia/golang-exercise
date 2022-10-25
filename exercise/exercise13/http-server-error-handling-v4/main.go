@@ -33,20 +33,41 @@ func CheckOpenFile(r *http.Request) error {
 func MethodHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := MethodGet(r)
-		fmt.Println(err) // TODO: replace this
+		if err != nil {
+			w.WriteHeader(405)
+			w.Write([]byte(err.Error()))
+		} else {
+			a := "Method handler passed"
+			w.WriteHeader(200)
+			w.Write([]byte(a))
+		}
 	}
 }
 
 func DataHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := CheckDataRequest(r)
-		fmt.Println(err) // TODO: replace this
+		if err != nil {
+			w.WriteHeader(404)
+			w.Write([]byte(err.Error()))
+		} else {
+			a := "Data handler passed"
+			w.WriteHeader(200)
+			w.Write([]byte(a))
+		}
 	}
 }
 
 func OpenFileHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := CheckOpenFile(r)
-		fmt.Println(err) // TODO: replace this
+		if err != nil {
+			w.WriteHeader(500)
+			w.Write([]byte(err.Error()))
+		} else {
+			a := "Error handler passed"
+			w.WriteHeader(200)
+			w.Write([]byte(a))
+		}
 	}
 }

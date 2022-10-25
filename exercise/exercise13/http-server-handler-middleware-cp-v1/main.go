@@ -12,11 +12,17 @@ func StudentHandler() http.HandlerFunc {
 }
 
 func RequestMethodGet(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}) // TODO: replace this
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			w.WriteHeader(405)
+			w.Write([]byte("Method is not allowed"))
+		} else {
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("Welcome to Student page"))
+		}
+	}) // TODO: replace this
 }
 
 func main() {
-	// TODO: answer here
-
 	http.ListenAndServe("localhost:8080", nil)
 }
