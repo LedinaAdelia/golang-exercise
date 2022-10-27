@@ -30,7 +30,7 @@ func ClearToDo(w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	username := fmt.Sprintf("%s", r.Context().Value("username"))
+	// username := fmt.Sprintf("%s", r.Context().Value("username"))
 	// TODO: answer here
 }
 
