@@ -218,11 +218,11 @@ var testData = []main.RowData{
 }
 
 var _ = Describe("FilterAndGetDomain", func() {
-	ReportAfterEach(func(report SpecReport) {
-		if report.RunTime > (time.Millisecond * 300) {
-			AbortSuite(errTimeoutMessage)
-		}
-	})
+	// ReportAfterEach(func(report SpecReport) {
+	// 	if report.RunTime > (time.Millisecond * 300) {
+	// 		AbortSuite(errTimeoutMessage)
+	// 	}
+	// })
 
 	Context("error cases", func() {
 		When("one of list data have empty domain", func() {

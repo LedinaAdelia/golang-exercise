@@ -16,10 +16,9 @@ func RequestMethodGet(next http.Handler) http.Handler {
 		if r.Method != "GET" {
 			w.WriteHeader(405)
 			w.Write([]byte("Method is not allowed"))
-		} else {
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("Welcome to Student page"))
+			return
 		}
+		next.ServeHTTP(w, r)
 	}) // TODO: replace this
 }
 

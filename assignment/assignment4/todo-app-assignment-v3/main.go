@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -10,7 +11,11 @@ import (
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	// TODO: answer here
+	w.Header().Set("Content-Type", "application/json")
+	var user model.Credentials
+	json.NewDecoder(r.Body).Decode(&user)
+	db.Users[user.Username] = user.Password
+	json.NewEncoder(w).Encode(user)
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {

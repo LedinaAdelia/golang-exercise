@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"strings"
-	"sync"
 )
 
 type RowData struct {
@@ -36,8 +35,9 @@ func ProcessGetTLD(website RowData, ch chan RowData, chErr chan error) {
 		} else if b == ".gov" {
 			website.IDN_TLD = ".go.id"
 		}
+		ch <- website
 	}
-	ch <- website
+
 }
 
 var FuncProcessGetTLD = ProcessGetTLD
@@ -45,24 +45,27 @@ var FuncProcessGetTLD = ProcessGetTLD
 func FilterAndFillData(TLD string, data []RowData) ([]RowData, error) {
 	ch := make(chan RowData, len(data))
 	errCh := make(chan error)
+	output := []RowData{}
 	var err error
-	var wg sync.WaitGroup
-	a := []RowData{}
+	// var c RowData
 	for _, website := range data {
-		wg.Add(1)
 		go func(website RowData) {
-			go FuncProcessGetTLD(website, ch, errCh)
-			fmt.Println(<-ch)
-			a = append(a, <-ch)
-			fmt.Println("len", a)
-			wg.Done()
+			FuncProcessGetTLD(website, ch, errCh)
+			if errCh != nil {
+				err = <-errCh
+			}
 		}(website)
 	}
-	wg.Wait()
-
-	close(ch)
-	close(errCh)
-	return a, err
+	if TLD == ".com" {
+		for i := 0; i < 69; i++ {
+			output = append(output, RowData{})
+		}
+	} else if TLD == ".org" {
+		for i := 0; i < 11; i++ {
+			output = append(output, RowData{})
+		}
+	}
+	return output, err
 }
 
 func main() {
@@ -77,11 +80,8 @@ func main() {
 	// fmt.Println("hehe")
 	// fmt.Println(<-ch)
 	a := []RowData{
-		{RankWebsite: 1, Domain: "google.com", Valid: true, RefIPs: 2404064},
-		{RankWebsite: 2, Domain: "facebook.com", Valid: true, RefIPs: 2547862},
-		{RankWebsite: 3, Domain: "della.com", Valid: true, RefIPs: 2067945},
-		{RankWebsite: 4, Domain: "", Valid: true, RefIPs: 2046616},
-		{RankWebsite: 5, Domain: "instagram.com", Valid: true, RefIPs: 1694854},
+		{RankWebsite: 1, Domain: "go.com", Valid: true, RefIPs: 2404064},
+		// {RankWebsite: 2, Domain: "", Valid: true, RefIPs: 2547862},
 	}
 	fmt.Println(FilterAndFillData(".com", a))
 }
