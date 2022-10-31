@@ -55,23 +55,19 @@ func changeFormatDate(d string) string {
 }
 
 func GetSalary(rangeDay int, data [][]string) map[string]string {
-	fmt.Println(rangeDay)
 	salary := 50000
-	r := map[string]string{}
-	temp := map[string]int{}
+	temp := map[string]string{}
+	count := map[string]int{}
 	for i, a := range data {
 		for _, b := range a {
-			fmt.Println(rangeDay, b, i)
 			if i < rangeDay {
-				temp[b] += salary
-				fmt.Println(temp[b])
-				con := FormatRupiah(temp[b])
-				r[b] = con
+				count[b] += salary
+				con := FormatRupiah(count[b])
+				temp[b] = con
 			}
 		}
-		fmt.Println("")
 	}
-	return r // TODO: replace this
+	return temp // TODO: replace this
 }
 
 func FormatRupiah(number int) string {
