@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en" >
 <head>
-    <title>Dashboard Page</title>
     <script>
         function displayQty(listData, checkId, qtyId) {
             var checkBox = document.getElementById(checkId);
@@ -15,94 +13,202 @@
             }
         }
     </script>
-    <style>
-        .avatar {
-            float: left;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-        }
-
-        .avatar:hover {
-            background-color: #000;
-            cursor: pointer;
-        }
-
-        .navbar {
-            width: 100%;
-            overflow: auto;
-        }
-
-        .menu {
-            float: left;
-            text-align: center;
-            padding: 12px;
-            color: #000;
-            text-decoration: none;
-            font-size: 17px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg" href="logo.svg">
+    <script src="https://kit.fontawesome.com/d369a1ef16.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+    <title>dahsboard user</title>
 </head>
-
 <body>
-    <header>
-        <h1>Dashboard Page</h1>
-    </header>
+    <div class="h-screen w-full overflow-hidden">
+        <div class="flex w-full h-full">
+            <!-- kiri -->
+            <section class="w-3/4 bg-white text-gray-800 drop-shadow-xl">
+                <div class="h-1/6 mt-2 w-full px-12 py-9 flex items-center">
+                    <div class="relative h-full pt-1">
+                        <img class="w-12 h-12 rounded-full drop-shadow-lg" src="https://i.pinimg.com/736x/8b/b4/e8/8bb4e8557eb2f0aff2da0f81cb53f77a.jpg" alt="Rounded avatar">
+                        <span class="bottom-2 left-8 absolute  w-4 h-4 bg-white drop-shadow-lg grid justify-items-center rounded-full "><i class="fa-solid fa-plus fa-2xs mt-2 text-indigo-700"></i></span>
+                        <button type="button" data-modal-toggle="updateProfile" class="absolute w-12 h-12 rounded-full top-1 opacity-0">hai</button>
+                    </div>
+                    <h6 class="font-bold text-lg mx-5 tracking-wide">Hello, {{.Cart.Name}}</h6>
+                    <div class="flex items-center ml-auto drop-shadow-lg bg-gray-100 self-stretch rounded-2xl px-6 w-4/6">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="px-4 self-stretch bg-transparent flex-grow outline-none" placeholder="Search">
+                    </div>
+                </div>
 
-    <nav>
-        <form method="post" action="/user/img/update-profile" enctype="multipart/form-data">
-            <div class="navbar">
-                <img src="/user/img/profile" alt="Avatar" class="avatar">
-                <label class="menu">Hello {{.Cart.Name}}</label>
-                <label class="menu">Update Profile: </label>
-                <input type="file" name="file-avatar" required />
-                <input type="submit">
+                <!-- list product  -->
+                <form class="h-5/6 px-12 py-3" method="post" action="/cart/add">
+                    <div class="mb-9 flex items-center">
+                        <div class="mr-auto leading-relaxed">
+                            <h1 class="text-2xl leading-none font-bold tracking-wide text-black">List Product</h1>
+                        </div>
+                        <button type="submit" class="hover:drop-shadow-xl w-36 ml-4 text-center text-white bg-gradient-to-r from-indigo-700 to-purple-800 border-black border-2 font-bold rounded-lg text-sm px-1 py-2"><i class="fa-solid fa-cart-shopping mr-2"></i>Add to Cart</button>
+                    </div>
+                    <!-- {{range $val := .Product}} -->
+                    <ul class="grid gap-6 w-full md:grid-cols-3 h-5/6 overflow-auto">
+                        <li>
+                            <input type="checkbox" value="" class="hidden peer" id="check-{{ .Id }}" name="product" onclick="displayQty('{{ .Id }},{{ .Name }},{{ .Price }}', 'check-{{ .Id }}', 'qty-{{ .Id }}')">
+                            <label for="check-{{ .Id }}" class="grid p-5 w-full bg-white border-black border-8 border-double rounded-2xl cursor-pointer peer-checked:border-indigo-700">                           
+                                <div class="flex items-center mb-6 mt-1">
+                                    <div class=" text-lg font-semibold">{{ .Name }}</div>
+                                    <div class="ml-auto text-sm text-right  flex items-center">Rp. {{ .Price }},-</div>
+                                </div>
+                                <div class="custom-number-input h-10 w-full">
+                                    <div class="flex flex-row h-10 w-full rounded-2xl relative bg-transparent space-x-2">
+                                        <button data-action="decrement" type="button" class="bg-gradient-to-r from-indigo-700 to-purple-800 text-gray-600 hover:text-gray-700 h-full w-16 rounded-full cursor-pointer outline-none">
+                                            <span class="m-auto text-2xl text-white">-</span>
+                                        </button>
+                                        <input type="number" class="outline-none focus:outline-none text-center w-full bg-gray-200 rounded-2xl font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" name="custom-input-number" id="qty-{{ .Id }}" value="1" min="1" max="100" onchange="displayQty('{{ .Id }},{{ .Name }},{{ .Price }}', 'check-{{ .Id }}', 'qty-{{ .Id }}')"></input>
+                                        <button data-action="increment" type="button" class=" bg-gradient-to-r from-indigo-700 to-purple-800 text-gray-600 hover:text-gray-700  h-full w-16 rounded-full cursor-pointer">
+                                            <span class="m-auto text-2xl text-white">+</span>
+                                        </button>
+                                  </div>
+                            </label>
+                        </li>
+                    </ul>
+                    <!-- {{else}}
+                    Empty Product
+                    {{end}} -->
+                </form>
+                <!-- list product  -->
+
+            </section>
+            <!-- kiri -->
+
+            <!-- popup update profile -->
+            <section id="updateProfile" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+                <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+                    <form method="post" action="/user/img/update-profile" enctype="multipart/form-data" class="relative bg-white rounded-lg shadow border-black border-8 border-double">
+                        <div class="flex justify-between items-start p-4 rounded-t mt-2">
+                            <h3 class="text-xl font-semibold text-gray-900">
+                                Update Profile
+                            </h3>
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center " data-modal-toggle="updateProfile">
+                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <div class="flex justify-center items-center w-full px-4">
+                            <label for="dropzone-file" class="flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer ">
+                                <div class="flex flex-col justify-center items-center pt-5 pb-6">
+                                    <i class="fa-solid fa-camera mb-3 w-10 h-10 text-gray-400 fa-2x" aria-hidden="true"></i>
+                                    <p class="mb-2 text-sm text-gray-500 "><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                    <p class="text-xs text-gray-500 ">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                </div>
+                                <input id="dropzone-file" type="file" name="file-avatar" class="hidden" />
+                            </label>
+                        </div> 
+                        <div class="items-center p-4 mt-3">
+                            <button data-modal-toggle="updateProfile" type="submit" class="hover:drop-shadow-xl text-center w-full text-white bg-gradient-to-r from-indigo-700 to-purple-800 border-black border-2 font-bold rounded-lg text-sm px-1 py-2.5 mr-2 mb-2"><i class="fa-solid fa-cloud-arrow-up mr-2"></i>Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <!-- popup update profile -->
+
+            <!-- kanan -->
+            <section class="w-1/4 bg-gray-50">
+                <div class="h-1/6 mt-2 w-full px-8 py-9 flex items-center mb-3">
+                    <h6 class="font-bold text-2xl tracking-wide">My Cart</h6>
+                    <button type="button" data-modal-toggle="popup-exit" class="ml-auto hover:drop-shadow-xl w-10 h-10 text-center text-white bg-gradient-to-r from-indigo-700 to-purple-800 border-black border-2 font-bold rounded-full text-sm  py-2 ">
+                        <i class="fa-solid fa-power-off fa-lg"></i>
+                    </button>  
+                </div>
+                <div class=" h-5/6">
+                    <ul class=" w-full h-5/6 overflow-auto">
+                        <!-- {{range $val := .Cart.Cart}} -->
+                        <li>
+                            <label class="inline-flex justify-between items-center px-8 py-5 w-full border-gray-200 border border-r-0 border-l-0 cursor-pointer peer-checked:border-blue-600 hover:text-gray-600  peer-checked:text-gray-600 hover:bg-gray-50 ">                           
+                                <div class="flex items-center w-full">
+                                    <div class="flex flex-col space-y-2">
+                                       <div class="text-lg font-bold">{{ .Name }}</div>
+                                        <div class="text-sm">Price: Rp. {{ .Price }},-</div>
+                                    </div>
+                                    <div class="flex flex-col space-y-2 ml-auto">
+                                        <div class="text-sm text-right font-light">Quantity: {{ .Quantity }}</div>
+                                         <div class=" font-medium text-right">Rp. {{ .Total }},-</div>
+                                     </div>
+                                </div>
+                            </label>
+                        </li>
+                        <!-- {{else}}
+                        Empty Cart
+                        {{end}} -->
+                    </ul>
+                    <div class="border-t-4 border-double border-black h-1/5 p-8 bg-gray-200">
+                        <di class="flex items-center">
+                            <h2 class="text-sm tracking-wider">Total Price:</h2>
+                            <p class="font-medium text-right ml-auto">Rp. {{.Cart.TotalPrice}},-</p>
+                        </di>
+                    </div>
+                </div>
+            </section>
+
+            <!-- popup exit -->
+            <div id="popup-exit" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full">
+                <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+                    <form method="get" action="/user/logout" class="relative bg-white rounded-2xl  shadow border-black border-8 border-double" >
+                        <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center " data-modal-toggle="popup-exit">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                        <div class="p-6 text-center">
+                            <i class="fa-solid fa-person-walking-arrow-right fa-3x text-gray-400 mb-6"></i>
+                            <h3 class="mb-8 text-lg font-normal text-gray-500 ">Are you leaving already?</h3>
+                            <button type="submit" class="hover:drop-shadow-xl w-36 ml-4 text-center text-white bg-gradient-to-r from-indigo-700 to-purple-800 border-black border-2 font-bold rounded-lg text-sm px-1 py-2">
+                                Yes, I'm sure
+                            </button>
+                            <button data-modal-toggle="popup-exit" type="button" class="hover:drop-shadow-xl w-36 ml-4 text-center text-black border-black border-2 font-bold rounded-lg text-sm px-1 py-2">No, cancel</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
-    </nav>
+            <!-- popup exit -->
+            <!-- kanan -->
+        </div>
+    </div>
 
-    <section>
-        <h2>List Product</h2>
-        <form method="post" action="/cart/add">
-            {{range $val := .Product}}
-            <input type="checkbox" id="check-{{ .Id }}" name="product"
-                onclick="displayQty('{{ .Id }},{{ .Name }},{{ .Price }}', 'check-{{ .Id }}', 'qty-{{ .Id }}')">
-            <label>{{ .Id }}. {{ .Name }}: Rp. {{ .Price }},-</label>
-            <input type="number" style="display:none" id="qty-{{ .Id }}" value="1" min="1" max="100"
-                onchange="displayQty('{{ .Id }},{{ .Name }},{{ .Price }}', 'check-{{ .Id }}', 'qty-{{ .Id }}')">
-            <br>
-            {{else}}
-            Empty Product
-            {{end}}
-            <button type="submmit">Add to Cart</button>
-        </form>
-    </section>
-
-    <section>
-        <h2>My Cart</h2>
-
-        <ul>
-            {{range $val := .Cart.Cart}}
-            <li>{{ .Name }}
-                <ul>
-                    <li>Price: Rp. {{ .Price }},-</li>
-                    <li>Quantity: {{ .Quantity }}</li>
-                    <li>Total: {{ .Total }}</li>
-                </ul>
-            </li>
-            {{else}}
-            Empty Cart
-            {{end}}
-        </ul>
-        <p>Total Price Rp. {{.Cart.TotalPrice}},-</p>
-    </section>
-
-    <footer>
-        <form method="get" action="/user/logout">
-            <button type="submmit">Logout</button>
-        </form>
-    </footer>
-
+    <script>
+        function decrement(e) {
+          const btn = e.target.parentNode.parentElement.querySelector(
+            'button[data-action="decrement"]'
+          );
+          const target = btn.nextElementSibling;
+          let value = Number(target.value);
+          value--;
+          target.value = value;
+        }
+      
+        function increment(e) {
+          const btn = e.target.parentNode.parentElement.querySelector(
+            'button[data-action="decrement"]'
+          );
+          const target = btn.nextElementSibling;
+          let value = Number(target.value);
+          value++;
+          target.value = value;
+        }
+      
+        const decrementButtons = document.querySelectorAll(
+          `button[data-action="decrement"]`
+        );
+      
+        const incrementButtons = document.querySelectorAll(
+          `button[data-action="increment"]`
+        );
+      
+        decrementButtons.forEach(btn => {
+          btn.addEventListener("click", decrement);
+        });
+      
+        incrementButtons.forEach(btn => {
+          btn.addEventListener("click", increment);
+        });
+      </script>
 </body>
-
 </html>

@@ -12,10 +12,9 @@ func Get(next http.Handler) http.Handler {
 		fmt.Println("1")
 		if r.Method != http.MethodGet {
 			w.WriteHeader(http.StatusMethodNotAllowed)
-			errorRes := model.ErrorResponse{
+			json.NewEncoder(w).Encode(model.ErrorResponse{
 				Error: "Method is not allowed!",
-			}
-			json.NewEncoder(w).Encode(errorRes)
+			})
 			return
 		}
 		next.ServeHTTP(w, r)
@@ -26,17 +25,15 @@ func Post(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			w.WriteHeader(http.StatusMethodNotAllowed)
-			errorRes := model.ErrorResponse{
+			json.NewEncoder(w).Encode(model.ErrorResponse{
 				Error: "Method is not allowed!",
-			}
-			json.NewEncoder(w).Encode(errorRes)
+			})
 			return
 		} else if r.Body == http.NoBody {
 			w.WriteHeader(http.StatusBadRequest)
-			errorRes := model.ErrorResponse{
+			json.NewEncoder(w).Encode(model.ErrorResponse{
 				Error: "Internal Server Error",
-			}
-			json.NewEncoder(w).Encode(errorRes)
+			})
 			return
 		}
 		next.ServeHTTP(w, r)
@@ -47,10 +44,9 @@ func Delete(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodDelete {
 			w.WriteHeader(http.StatusMethodNotAllowed)
-			errorRes := model.ErrorResponse{
+			json.NewEncoder(w).Encode(model.ErrorResponse{
 				Error: "Method is not allowed!",
-			}
-			json.NewEncoder(w).Encode(errorRes)
+			})
 			return
 		}
 		next.ServeHTTP(w, r)
