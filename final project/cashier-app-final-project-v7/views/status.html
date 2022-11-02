@@ -2,35 +2,14 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg" href="logo.svg">
-    <script src="https://kit.fontawesome.com/d369a1ef16.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
     <title>Show Message</title>
 </head>
 
 <body>
-    <section class="bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-700">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <div class="w-full bg-white border-double rounded-2xl shadow md:mt-0 sm:max-w-md xl:p-0 border-black border-8">
-                <div class="w-full bg-white rounded-2xl shadow md:mt-0 sm:max-w-md xl:p-0 ">
-                    <div class="p-6 space-y-6 sm:p-10 grid">
-                        <label class="text-center block font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-800 font-serif "><i class="fa-sharp fa-solid fa-check fa-5x"></i></label>
-                        <h1 class=" text-center text-stone-900 sm:tracking-wide text-3xl font-extrabold leading-tight tracking-tight mb-12">
-                            Hello {{.name}}
-                        </h1>  
-                        <p class="text-center block mb-2 text-sm font-medium text-gray-500 font-serif ">{{.message}}</p>
-                        <a href="/page/login" class="hover:drop-shadow-xl text-center w-full text-white bg-gradient-to-r from-indigo-700 to-purple-800 border-black border-2 font-bold rounded-lg text-sm px-1 py-2.5 mr-2 mb-2">
-                            <i class="fa-solid fa-plane-departure mr-3"></i>Go to login page
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <h1>Hello {{.name}}</h1>
+    <p>{{.message}}</p>
+
+    <a href="/page/login">Go to Login Page</a>
   
 </body>
 

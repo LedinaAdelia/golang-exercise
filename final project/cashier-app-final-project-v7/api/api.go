@@ -4,6 +4,7 @@ import (
 	repo "a21hc3NpZ25tZW50/repository"
 	"fmt"
 	"net/http"
+	"path"
 )
 
 type API struct {
@@ -19,7 +20,7 @@ type Page struct {
 }
 
 func (p Page) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// filepath := path.Join("views", p.File)
+	filepath := path.Join("views", p.File)
 	// TODO: answer here
 }
 

@@ -9,7 +9,7 @@ import (
 
 func (api *API) AddCart(w http.ResponseWriter, r *http.Request) {
 	// Get username context to struct model.Cart.
-	// username := "" // TODO: replace this
+	username := "" // TODO: replace this
 
 	r.ParseForm()
 
