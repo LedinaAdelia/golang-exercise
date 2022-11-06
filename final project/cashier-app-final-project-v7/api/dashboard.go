@@ -10,7 +10,6 @@ import (
 )
 
 func (api *API) dashboardView(w http.ResponseWriter, r *http.Request) {
-
 	var username string
 	if r.FormValue("username") != "" {
 		username = r.FormValue("username")
@@ -20,6 +19,11 @@ func (api *API) dashboardView(w http.ResponseWriter, r *http.Request) {
 
 	var data model.Dashboard
 	listProducts, err := api.products.ReadProducts()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(model.ErrorResponse{Error: err.Error()})
+		return
+	}
 
 	cart, err := api.cartsRepo.CartUserExist(username)
 	if err != nil {
@@ -49,4 +53,6 @@ func (api *API) dashboardView(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(model.ErrorResponse{Error: err.Error()})
 	}
+
+	w.WriteHeader(http.StatusOK)
 }

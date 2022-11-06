@@ -1,8 +1,13 @@
-<!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Dashboard Page</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg" href="logo.svg">
+    <script src="https://kit.fontawesome.com/d369a1ef16.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+    <title>Dashboard User</title>
     <script>
         function displayQty(listData, checkId, qtyId) {
             var checkBox = document.getElementById(checkId);
@@ -15,94 +20,189 @@
             }
         }
     </script>
-    <style>
-        .avatar {
-            float: left;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-        }
-
-        .avatar:hover {
-            background-color: #000;
-            cursor: pointer;
-        }
-
-        .navbar {
-            width: 100%;
-            overflow: auto;
-        }
-
-        .menu {
-            float: left;
-            text-align: center;
-            padding: 12px;
-            color: #000;
-            text-decoration: none;
-            font-size: 17px;
-        }
-    </style>
 </head>
-
 <body>
-    <header>
-        <h1>Dashboard Page</h1>
-    </header>
+    <section class="h-full flex bg-slate-50 overflow-hidden">
+        <article class="h-full w-1/12 py-6 px-5 bg-transparent flex justify-center ">
+            <div class="flex flex-col items-center w-20 h-full overflow-hidden text-white text-opacity-50 bg-gradient-to-b from-indigo-700 via-purple-700 to-pink-700 rounded-2xl drop-shadow-md">
+                <div class="grid justify-center mb-4">
+                    <img class="w-12 h-12 rounded-2xl mt-5" src="/user/img/profile" alt="Rounded avatar">
+                    <button class="w-12 h-12 rounded-full bg-transparent -mt-14" type="button" data-modal-toggle="update-profile"></button>
+                </div>
 
-    <nav>
-        <form method="post" action="/user/img/update-profile" enctype="multipart/form-data">
-            <div class="navbar">
-                <img src="/user/img/profile" alt="Avatar" class="avatar">
-                <label class="menu">Hello {{.Cart.Name}}</label>
-                <label class="menu">Update Profile: </label>
-                <input type="file" name="file-avatar" required />
-                <input type="submit">
+                <div class="flex flex-col items-center mt-2 border-white border-opacity-50 border-double border-4 border-l-0 border-r-0 border-b-0">
+                    <a class="flex items-center justify-center w-12 h-12 mt-4 rounded-2xl bg-white" href="#">
+                        <i class="fa-sharp fa-solid fa-house-chimney fa-lg text-indigo-800"></i>
+                    </a>
+                    <a class="flex items-center justify-center w-12 h-12 mt-2 " href="#">
+                        <i class="fa-solid fa-burger fa-lg"></i>
+                    </a>
+                    <a class="flex items-center justify-center w-12 h-12 mt-2" href="#">
+                        <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </a>
+                    <a class="flex items-center justify-center w-12 h-12 mt-2" href="#">
+                        <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="flex flex-col items-center mt-2 border-white border-opacity-50 border-double border-4 border-l-0 border-r-0 border-b-0">
+                    <a class="flex items-center justify-center w-12 h-12 mt-3 " href="#">
+                        <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </a>
+                    <a class="flex items-center justify-center w-12 h-12 mt-2 " href="#">
+                        <svg class="w-6 h-6 stroke-current"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                        </svg>
+                    </a>
+                </div>
+                <button class="flex items-center justify-center w-20 h-16 mt-auto bg-transparent" data-modal-toggle="exit">
+                    <i class="fa-solid fa-power-off fa-lg hover:text-white"></i>
+                </button>
             </div>
-        </form>
-    </nav>
+        </article>
 
-    <section>
-        <h2>List Product</h2>
-        <form method="post" action="/cart/add">
-            {{range $val := .Product}}
-            <input type="checkbox" id="check-{{ .Id }}" name="product"
-                onclick="displayQty('{{ .Id }},{{ .Name }},{{ .Price }}', 'check-{{ .Id }}', 'qty-{{ .Id }}')">
-            <label>{{ .Id }}. {{ .Name }}: Rp. {{ .Price }},-</label>
-            <input type="number" style="display:none" id="qty-{{ .Id }}" value="1" min="1" max="100"
-                onchange="displayQty('{{ .Id }},{{ .Name }},{{ .Price }}', 'check-{{ .Id }}', 'qty-{{ .Id }}')">
-            <br>
-            {{else}}
-            Empty Product
-            {{end}}
-            <button type="submmit">Add to Cart</button>
-        </form>
-    </section>
+        <article class="h-full w-4/6 pt-6 pl-3">
+            <div class="h-24 w-full flex pt-3 border-4 border-double border-t-0 border-l-0 border-r-0 border-slate-200">
+                <div class="w-64 mt-4 tracking-wide font-semibold">
+                    <h1 class="text-xl">Hallo, <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-700 ">{{.Cart.Name}}</span></h1>
+                </div>
+                <div class="flex drop-shadow-md items-center bg-white self-stretch custom-rounded px-5 w-full h-14 rounded-2xl">
+                    <i class="fa fa-search text-gray-400"></i>
+                    <input type="text" class="px-4 self-stretch bg-transparent flex-grow outline-none" placeholder="Search...">
+                </div>
+            </div>
 
-    <section>
-        <h2>My Cart</h2>
-
-        <ul>
-            {{range $val := .Cart.Cart}}
-            <li>{{ .Name }}
-                <ul>
-                    <li>Price: Rp. {{ .Price }},-</li>
-                    <li>Quantity: {{ .Quantity }}</li>
-                    <li>Total: {{ .Total }}</li>
+            <form method="post" action="/cart/add" class="h-5/6 overflow-auto mt-5">
+                <div class="flex items-center">
+                    <h3 class="text-2xl font-bold tracking-wide">List Product</h3>
+                    <div class="p-1 h-full ml-auto bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-700 rounded-lg to-purple-800 flex justify-center">
+                        <button type="submit" class="font-bold tracking-normal text-sm bg-white h-full py-2 px-4 hover:text-white hover:bg-transparent rounded-md">
+                            <div class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-700 hover:text-white">
+                                <i class="fa-solid fa-cart-shopping mr-3"></i>Add to Cart
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <ul class="grid gap-4 w-full md:grid-cols-3 mt-5">
+                    {{range $val := .Product}}
+                    <li class="drop-shadow-md">
+                        <input type="checkbox" id="check-{{ .Id }}" class="hidden peer" name="product" onclick="displayQty('{{ .Id }},{{ .Name }},{{ .Price }}', 'check-{{ .Id }}', 'qty-{{ .Id }}')">
+                        <label for="check-{{ .Id }}" class="grid p-5 w-full text-gray-500 bg-white border-2 border-white rounded-lg cursor-pointer peer-checked:border-indigo-600 peer-checked:text-gray-600 ">                           
+                            <div class="flex items-center w-full">
+                                <h1 class="text-lg font-semibold text-black">{{ .Name }}</h1>
+                                <p class="text-sm ml-auto">Rp. {{ .Price }},-</p>
+                            </div>
+    
+                            <div class="custom-number-input h-10 w-full mt-5">
+                                <div class="flex flex-row h-9 w-full rounded-lg relative bg-transparent mt-1">
+                                    <input type="number" class="rounded-2xl outline-none bg-gray-200 focus:outline-none text-center w-full bg-white font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" id="qty-{{ .Id }}" value="1" min="1" max="100" onchange="displayQty('{{ .Id }},{{ .Name }},{{ .Price }}', 'check-{{ .Id }}', 'qty-{{ .Id }}')">
+                                </div>
+                            </div>
+                        </label>
+                    </li>
+                    {{else}}
+                    Empty Product
+                    {{end}}
                 </ul>
-            </li>
-            {{else}}
-            Empty Cart
-            {{end}}
-        </ul>
-        <p>Total Price Rp. {{.Cart.TotalPrice}},-</p>
+            </form>
+    
+        </article>
+
+        <article class="h-full w-2/6 pb-6 pt-9 px-12">
+            <div class=" h-4/5">
+                <ul class="grid gap-4 w-full grid-cols-1 overflow-auto h-full pb-14">
+                    {{range $val := .Cart.Cart}}
+                    <li class="drop-shadow-md">
+                        <input type="checkbox" id="check-{{ .Id }}" value="" class="hidden peer" required="">
+                        <label for="check-{{ .Id }}" class="grid p-5 w-full text-gray-500 bg-white rounded-lg">                           
+                            <div class="flex items-center w-full">
+                                <div class=""> 
+                                    <h1 class="text-base font-semibold mb-4 text-black">{{ .Name }}</h1>
+                                    <p class="text-sm">Price: Rp. {{ .Price }},-</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <h1 class="text-sm text-right mb-4">Quantity: {{ .Quantity }}</h1>
+                                    <p class="text-base font-semibold text-right text-black ">Total: Rp.  {{ .Total }},-</p>
+                                </div>
+                            </div>
+                        </label>
+                    </li>
+                    {{else}}
+                    Empty Cart
+                    {{end}}
+                </ul>
+            </div>
+
+            <div class="bg-white h-1/5 rounded-2xl grid px-6 drop-shadow-md">
+                <div class="flex items-center w-full mt-2">
+                    <h1 class="text-lg font-semibold">Total Price</h1>
+                    <p class="text-lg font-semibold ml-auto">Rp. {{.Cart.TotalPrice}},-</p>
+                </div>
+
+                <div class="flex items-center">
+                    <button type="submit" class="tracking-normal  hover:drop-shadow-xl text-center w-full text-white bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-700 font-bold rounded-lg text-sm py-3.5 mb-2"><i class="fa-solid fa-money-bill-trend-up mr-3"></i>Processed to Payment</button>
+                </div>
+            </div>
+        </article>
     </section>
 
-    <footer>
-        <form method="get" action="/user/logout">
-            <button type="submmit">Logout</button>
-        </form>
-    </footer>
+    <!-- hidden content -->
+    <div id="update-profile" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+        <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+            <!-- Modal content -->
+            <form class="relative bg-white rounded-lg shadow" method="post" action="/user/img/update-profile" enctype="multipart/form-data">
+                <!-- Modal header -->
+                <div class="flex justify-between items-start px-4 py-5 rounded-t">
+                    <h3 class="text-xl font-semibold text-gray-900">
+                        Update Profile
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center " data-modal-toggle="update-profile">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="flex justify-center items-center w-full px-4">
+                    <label for="dropzone-file" class="flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer">
+                        <div class="flex flex-col justify-center items-center pt-5 pb-6">
+                            <i class="fa-sharp fa-solid fa-photo-film text-gray-500 fa-2x mb-3"></i>
+                            <p class="mb-2 text-sm text-gray-500 "><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                            <p class="text-xs text-gray-500 ">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        </div>
+                        <input id="dropzone-file" type="file" name="file-avatar" required class="hidden" />
+                    </label>
+                </div> 
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 pb-5 space-x-2 rounded-b ">
+                    <button type="submit" class="hover:drop-shadow-xl text-center w-full text-white bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-700 tracking-wide font-bold rounded-lg text-sm py-3.5 mb-2"><i class="fa-solid fa-cloud-arrow-up mr-3"></i></i>Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
+    <div id="exit" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full">
+        <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+            <form class="relative bg-white rounded-lg shadow" method="get" action="/user/logout">
+                <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="exit">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+                <div class="p-6 text-center">
+                    <i class="fa-solid fa-person-walking-arrow-right fa-3x text-gray-400 mt-5"></i>
+                    <h3 class="mb-7 text-lg font-normal text-gray-500 mt-3">Are you leaving?</h3>
+                    <button type="submit" class="text-white bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-700 font-medium rounded-lg text-sm inline-flex items-center px-5 py-3.5 text-center mr-4">
+                        Yes, I'm sure
+                    </button>
+                    <button data-modal-toggle="exit" type="button" class="text-gray-500 bg-white hover:bg-gray-100 rounded-lg border-2 border-gray-300 text-sm font-medium px-6 py-3.5 hover:text-gray-900">No, cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- hidden content -->
 </body>
-
 </html>

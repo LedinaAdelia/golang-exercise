@@ -4,7 +4,7 @@ import (
 	repo "a21hc3NpZ25tZW50/repository"
 	"fmt"
 	"net/http"
-	"path"
+	"path/filepath"
 )
 
 type API struct {
@@ -20,8 +20,9 @@ type Page struct {
 }
 
 func (p Page) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	filepath := path.Join("views", p.File)
-	// TODO: answer here
+	filepath := filepath.Join("views", p.File)
+	http.ServeFile(w, r, filepath)
+	// http.FileServer(filepath)
 }
 
 func NewAPI(usersRepo repo.UserRepository, sessionsRepo repo.SessionsRepository, products repo.ProductRepository, cartsRepo repo.CartRepository) API {
@@ -42,6 +43,11 @@ func NewAPI(usersRepo repo.UserRepository, sessionsRepo repo.SessionsRepository,
 	// - Login page with endpoint `/page/login`, GET method and render `login.html` file on views folder
 	// TODO: answer here
 
+	register := Page{File: "register.html"}
+	mux.Handle("/page/register", api.Get(register))
+	login := Page{File: "login.html"}
+	mux.Handle("/page/login", api.Get(login))
+
 	mux.Handle("/user/register", api.Post(http.HandlerFunc(api.Register)))
 	mux.Handle("/user/login", api.Post(http.HandlerFunc(api.Login)))
 	mux.Handle("/user/logout", api.Get(api.Auth(http.HandlerFunc(api.Logout))))
@@ -51,6 +57,7 @@ func NewAPI(usersRepo repo.UserRepository, sessionsRepo repo.SessionsRepository,
 
 	// Please create routing for endpoint `/cart/add` with POST method, Authentication and handle api.AddCart
 	// TODO: answer here
+	mux.Handle("/cart/add", api.Post(api.Auth(http.HandlerFunc(api.AddCart))))
 
 	return api
 }
@@ -60,6 +67,6 @@ func (api *API) Handler() *http.ServeMux {
 }
 
 func (api *API) Start() {
-	fmt.Println("starting web server at http://localhost:8080")
+	fmt.Println("starting web server at http://localhost:8080/")
 	http.ListenAndServe(":8080", api.Handler())
 }

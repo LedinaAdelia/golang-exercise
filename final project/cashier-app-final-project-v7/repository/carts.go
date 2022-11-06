@@ -39,23 +39,24 @@ func (u *CartRepository) UpdateCart(cart model.Cart) error {
 	if err != nil {
 		return err
 	}
-
-	return nil // TODO: replace this
-
-	jsonData, err := json.Marshal(listCart)
-	if err != nil {
-		return err
+	for i := 0; i < len(listCart); i++ {
+		if listCart[i].Name == cart.Name {
+			listCart[i] = listCart[len(listCart)-1]
+			listCart = listCart[:len(listCart)-1]
+		}
 	}
-
-	err = u.db.Save("carts", jsonData)
-	if err != nil {
-		return err
-	}
+	listCart = append(listCart, cart)
+	var jsonData, _ = json.Marshal(listCart)
+	u.db.Save("carts", jsonData)
 
 	return nil
 }
 
 func (u *CartRepository) AddCart(cart model.Cart) error {
+	data, _ := u.ReadCart()
+	data = append(data, cart)
+	var jsonData, _ = json.Marshal(data)
+	u.db.Save("carts", jsonData)
 	return nil // TODO: replace this
 }
 

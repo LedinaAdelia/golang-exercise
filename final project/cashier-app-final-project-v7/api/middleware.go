@@ -9,8 +9,17 @@ import (
 
 func (api *API) Auth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		sessionToken := "" // TODO: replace this
-
+		c, err := r.Cookie("session_token")
+		if err != nil {
+			if err == http.ErrNoCookie {
+				w.WriteHeader(http.StatusUnauthorized)
+				json.NewEncoder(w).Encode(model.ErrorResponse{
+					Error: "http: named cookie not present",
+				})
+				return
+			}
+		}
+		sessionToken := c.Value
 		sessionFound, err := api.sessionsRepo.CheckExpireToken(sessionToken)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -25,14 +34,26 @@ func (api *API) Auth(next http.Handler) http.Handler {
 
 func (api *API) Get(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// TODO: answer here
+		if r.Method != http.MethodGet {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			json.NewEncoder(w).Encode(model.ErrorResponse{
+				Error: "Method is not allowed!",
+			})
+			return
+		}
 		next.ServeHTTP(w, r)
 	})
 }
 
 func (api *API) Post(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// TODO: answer here
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			json.NewEncoder(w).Encode(model.ErrorResponse{
+				Error: "Method is not allowed!",
+			})
+			return
+		}
 		next.ServeHTTP(w, r)
 	})
 }

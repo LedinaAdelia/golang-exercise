@@ -39,6 +39,12 @@ func (u *SessionsRepository) DeleteSessions(tokenTarget string) error {
 
 	// Select target token and delete from listSessions
 	// TODO: answer here
+	for i := 0; i < len(listSessions); i++ {
+		if listSessions[i].Token == tokenTarget {
+			listSessions[i] = listSessions[len(listSessions)-1]
+			listSessions = listSessions[:len(listSessions)-1]
+		}
+	}
 
 	jsonData, err := json.Marshal(listSessions)
 	if err != nil {
@@ -54,10 +60,30 @@ func (u *SessionsRepository) DeleteSessions(tokenTarget string) error {
 }
 
 func (u *SessionsRepository) AddSessions(session model.Session) error {
+	listSessions, err := u.ReadSessions()
+	if err != nil {
+		return err
+	}
+	listSessions = append(listSessions, session)
+	var jsonData, _ = json.Marshal(listSessions)
+	u.db.Save("sessions", jsonData)
 	return nil // TODO: replace this
 }
 
 func (u *SessionsRepository) CheckExpireToken(token string) (model.Session, error) {
+	listSessions, err := u.ReadSessions()
+	if err != nil {
+		return model.Session{}, err
+	}
+
+	for _, v := range listSessions {
+		if u.TokenExpired(v) {
+			u.DeleteSessions(v.Token)
+			return model.Session{}, fmt.Errorf("Token is Expired!")
+		} else {
+			return v, nil
+		}
+	}
 	return model.Session{}, nil // TODO: replace this
 }
 

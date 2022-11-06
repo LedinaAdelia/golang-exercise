@@ -17,7 +17,14 @@ import (
 func Register(w http.ResponseWriter, r *http.Request) {
 	var user model.Credentials
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	json.Unmarshal(reqBody, &user)
+	err := json.Unmarshal(reqBody, &user)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(model.ErrorResponse{
+			Error: "Internal Server Error",
+		})
+		return
+	}
 
 	if user.Username == "" || user.Password == "" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -43,9 +50,15 @@ func Register(w http.ResponseWriter, r *http.Request) {
 func Login(w http.ResponseWriter, r *http.Request) {
 	var user model.Credentials
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	json.Unmarshal(reqBody, &user)
+	err := json.Unmarshal(reqBody, &user)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(model.ErrorResponse{
+			Error: "Internal Server Error",
+		})
+		return
+	}
 	v, exists := db.Users[user.Username]
-
 	if user.Username == "" || user.Password == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(model.ErrorResponse{
@@ -104,8 +117,6 @@ func ListToDo(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := io.ReadAll(r.Body)
 	json.Unmarshal(reqBody, &todo)
 	username := db.Sessions["session_token"].Username
-	fmt.Println(db.Task[username])
-	// Reset -> db.Task -> empty Map
 	if len(db.Task) == 0 {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(model.ErrorResponse{

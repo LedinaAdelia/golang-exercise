@@ -31,6 +31,15 @@ func (u *UserRepository) ReadUser() ([]model.Credentials, error) {
 }
 
 func (u *UserRepository) AddUser(creds model.Credentials) error {
+	file, _ := u.ReadUser()
+	for _, v := range file {
+		if v.Username == creds.Username {
+			return fmt.Errorf("Username already exist")
+		}
+	}
+	file = append(file, creds)
+	var jsonData, _ = json.Marshal(file)
+	u.db.Save("users", jsonData)
 	return nil // TODO: replace this
 }
 

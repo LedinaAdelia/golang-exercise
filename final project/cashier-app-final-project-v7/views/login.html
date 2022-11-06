@@ -2,24 +2,43 @@
 <html>
 
 <head>
-    <title>Login User</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login user</title>
+    <link rel="icon" type="image/svg" href="logo.svg">
+    <script src="https://kit.fontawesome.com/d369a1ef16.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
 </head>
 
 <body>
-    <h1>Login Page</h1>
-    <form method="post" action="/user/login">
-        <label>Username :</label>
-        <input type="text" placeholder="Type username here" name="username" required />
-        <br />
-
-        <label>Password :</label>
-        <input type="password" placeholder="Type password here" name="password" required />
-        <br />
-
-        <button type="submmit">Submit</button>
-    </form>
-
-    <a href="/page/register">Go to Register Page</a>
+    <section class="bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-700">
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+            <div class="w-full bg-white rounded-2xl shadow md:mt-0 sm:max-w-md xl:p-0 border-black border-8 border-double">
+                <div class="p-6 space-y-4 md:space-y-6 sm:p-10 ">
+                    <h1 class=" text-center text-stone-900 sm:tracking-wide text-3xl font-extrabold leading-tight tracking-tight mb-12">
+                        Hello again!
+                    </h1>   
+                    <form class="space-y-4 md:space-y-6" method="post" action="/user/login">
+                        <div>
+                            <label for="username" class="block mb-2 text-sm font-medium text-gray-500 font-serif ">Username</label>
+                            <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="ex: lledidelia" required="">
+                        </div>
+                        <div>
+                            <label for="password" class="block mb-2 text-sm font-medium text-gray-500 font-serif ">Password</label>
+                            <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " required="">
+                        </div>
+                        
+                        <button type="submit" class="hover:drop-shadow-xl text-center w-full text-white bg-gradient-to-r from-indigo-700 to-purple-800 border-black border-2 font-bold rounded-lg text-sm px-1 py-2.5 mr-2 mb-2"><i class="fa-solid fa-door-open mr-3"></i>LOGIN</button>
+                        <p class="text-sm font-light text-gray-400 font-serif ">
+                            Don't have an account yet? <a href="/page/register" class="font-medium text-primary-600 underline">Register</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 
 </html>

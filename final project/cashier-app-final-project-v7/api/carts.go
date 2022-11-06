@@ -2,20 +2,32 @@ package api
 
 import (
 	"a21hc3NpZ25tZW50/model"
+	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
 )
 
 func (api *API) AddCart(w http.ResponseWriter, r *http.Request) {
-	// Get username context to struct model.Cart.
-	username := "" // TODO: replace this
+	log.Println("hehe")
+	if r.Body == http.NoBody {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(model.ErrorResponse{
+			Error: "Request Product Not Found",
+		})
+		return
+	}
 
+	user, _ := api.sessionsRepo.ReadSessions()
+	c, _ := r.Cookie("session_token")
+	username := ""
+	for _, v := range user {
+		if v.Token == c.Value {
+			username = v.Username
+		}
+	}
 	r.ParseForm()
-
-	// Check r.Form with key product, if not found then return response code 400 and message "Request Product Not Found".
-	// TODO: answer here
-
 	var list []model.Product
 	for _, formList := range r.Form {
 		for _, v := range formList {
@@ -32,9 +44,16 @@ func (api *API) AddCart(w http.ResponseWriter, r *http.Request) {
 			})
 		}
 	}
-
+	total := 0.0
+	for _, v := range list {
+		total += v.Total
+	}
 	// Add data field Name, Cart and TotalPrice with struct model.Cart.
-	cart := model.Cart{} // TODO: replace this
+	cart := model.Cart{
+		Name:       username,
+		Cart:       list,
+		TotalPrice: total,
+	} // TODO: replace this
 
 	_, err := api.cartsRepo.CartUserExist(cart.Name)
 	if err != nil {
@@ -43,5 +62,4 @@ func (api *API) AddCart(w http.ResponseWriter, r *http.Request) {
 		api.cartsRepo.UpdateCart(cart)
 	}
 	api.dashboardView(w, r)
-
 }
