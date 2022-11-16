@@ -1,45 +1,39 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"time"
+
 	"a21hc3NpZ25tZW50/db"
 	"a21hc3NpZ25tZW50/middleware"
 	"a21hc3NpZ25tZW50/model"
-	"encoding/json"
-	"fmt"
-	"io"
-	"io/ioutil"
-	"net/http"
-	"time"
 
 	"github.com/google/uuid"
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
 	var user model.Credentials
-	reqBody, _ := ioutil.ReadAll(r.Body)
-	err := json.Unmarshal(reqBody, &user)
+	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(model.ErrorResponse{
 			Error: "Internal Server Error",
 		})
-		return
-	}
-
-	if user.Username == "" || user.Password == "" {
+	} else if user.Username == "" || user.Password == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(model.ErrorResponse{
 			Error: "Username or Password empty",
 		})
-		return
-	} else if _, exists := db.Users[user.Username]; exists {
+	} else if _, ok := db.Users[user.Username]; ok {
 		w.WriteHeader(http.StatusConflict)
 		json.NewEncoder(w).Encode(model.ErrorResponse{
 			Error: "Username already exist",
 		})
-		return
-	} else if user.Username != "" && user.Password != "" {
+	} else {
 		db.Users[user.Username] = user.Password
+		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(model.SuccessResponse{
 			Username: user.Username,
 			Message:  "Register Success",
@@ -49,103 +43,104 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	var user model.Credentials
-	reqBody, _ := ioutil.ReadAll(r.Body)
-	err := json.Unmarshal(reqBody, &user)
+	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(model.ErrorResponse{
 			Error: "Internal Server Error",
 		})
-		return
-	}
-	v, exists := db.Users[user.Username]
-	if user.Username == "" || user.Password == "" {
+	} else if user.Username == "" || user.Password == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(model.ErrorResponse{
 			Error: "Username or Password empty",
 		})
-		return
-	} else if !exists || (v != user.Password) {
+	} else if checkDB, ok := db.Users[user.Username]; !ok && checkDB != user.Password {
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(model.ErrorResponse{
 			Error: "Wrong User or Password!",
 		})
-		return
-	} else if exists {
-		id := uuid.New()
-
-		http.SetCookie(w, &http.Cookie{
-			Name:   "session_token",
-			Value:  id.String(),
-			MaxAge: 18000,
-			Path:   "/",
-		})
-
-		db.Sessions["session_token"] = model.Session{
-			Username: user.Username,
-			Expiry:   time.Unix(18000, 0),
+	} else {
+		cookie := &http.Cookie{
+			Name:    "session_token",
+			Value:   uuid.NewString(),
+			Expires: time.Now().Add(5 * time.Hour),
+			Path:    "/",
 		}
 
+		http.SetCookie(w, cookie)
+
+		db.Sessions[cookie.Name] = model.Session{
+			Username: user.Username,
+			Expiry:   cookie.Expires,
+		}
+
+		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(model.SuccessResponse{
 			Username: user.Username,
 			Message:  "Login Success",
 		})
+
+		fmt.Println("db: ", cookie.Value)
 	}
 }
 
 func AddToDo(w http.ResponseWriter, r *http.Request) {
-	var todo model.Todo
-	uuid := uuid.New()
-	reqBody, _ := ioutil.ReadAll(r.Body)
-	json.Unmarshal(reqBody, &todo)
-
-	username := db.Sessions["session_token"].Username
-	db.Task[username] = append(db.Task[username], model.Todo{
-		Id:   uuid.String(),
-		Task: todo.Task,
-		Done: todo.Done,
-	})
-
-	json.NewEncoder(w).Encode(model.SuccessResponse{
-		Username: db.Sessions["session_token"].Username,
-		Message:  fmt.Sprintf("Task %s added!", todo.Task),
-	})
+	var task model.Todo
+	err := json.NewDecoder(r.Body).Decode(&task)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(model.ErrorResponse{
+			Error: "Internal Server Error",
+		})
+	} else {
+		db.Task[db.Sessions["session_token"].Username] = append(db.Task[db.Sessions["session_token"].Username], model.Todo{
+			Id:   uuid.NewString(),
+			Task: task.Task,
+			Done: task.Done,
+		})
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(model.SuccessResponse{
+			Username: db.Sessions["session_token"].Username,
+			Message:  fmt.Sprintf("Task %s added!", task.Task),
+		})
+	}
+	c, _ := r.Cookie("session_token")
+	fmt.Println("add todo: ", c.Value)
 }
 
 func ListToDo(w http.ResponseWriter, r *http.Request) {
-	var todo model.Todo
-	reqBody, _ := io.ReadAll(r.Body)
-	json.Unmarshal(reqBody, &todo)
-	username := db.Sessions["session_token"].Username
 	if len(db.Task) == 0 {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(model.ErrorResponse{
 			Error: "Todolist not found!",
 		})
-	} else if len(db.Task[username]) >= 0 {
+	} else {
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(db.Task[username])
+		json.NewEncoder(w).Encode(db.Task[db.Sessions["session_token"].Username])
 	}
+	c, _ := r.Cookie("session_token")
+	fmt.Println("list todo: ", c.Value)
 }
 
 func ClearToDo(w http.ResponseWriter, r *http.Request) {
-	_, err := r.Cookie("session_token")
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		json.NewEncoder(w).Encode(model.ErrorResponse{
-			Error: err.Error(),
-		})
-		return
-	}
-	username := db.Sessions["session_token"].Username
-	db.Task[username] = []model.Todo{}
+	db.Task[db.Sessions["session_token"].Username] = []model.Todo{}
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(model.SuccessResponse{
 		Username: db.Sessions["session_token"].Username,
 		Message:  "Clear ToDo Success",
 	})
+	c, _ := r.Cookie("session_token")
+	fmt.Println("clear todo: ", c.Value)
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:    "session_token",
+		Value:   "",
+		Expires: time.Unix(0, 0),
+		Path:    "/",
+	})
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(model.SuccessResponse{
 		Username: db.Sessions["session_token"].Username,
 		Message:  "Logout Success",
@@ -154,7 +149,6 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 }
 
 func ResetToDo(w http.ResponseWriter, r *http.Request) {
-	// username := db.Sessions["session_token"].Username
 	db.Task = map[string][]model.Todo{}
 	w.WriteHeader(http.StatusOK)
 }
@@ -172,9 +166,11 @@ func NewAPI() API {
 	mux.Handle("/user/register", middleware.Post(http.HandlerFunc(Register)))
 	mux.Handle("/user/login", middleware.Post(http.HandlerFunc(Login)))
 	mux.Handle("/user/logout", middleware.Get(middleware.Auth(http.HandlerFunc(Logout))))
+
 	mux.Handle("/todo/create", middleware.Post(middleware.Auth(http.HandlerFunc(AddToDo))))
 	mux.Handle("/todo/read", middleware.Get(middleware.Auth(http.HandlerFunc(ListToDo))))
-	mux.Handle("/todo/clear", middleware.Delete(http.HandlerFunc(ClearToDo)))
+	mux.Handle("/todo/clear", middleware.Delete(middleware.Auth(http.HandlerFunc(ClearToDo))))
+
 	mux.Handle("/todo/reset", http.HandlerFunc(ResetToDo))
 
 	return api

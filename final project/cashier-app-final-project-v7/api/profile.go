@@ -12,7 +12,6 @@ import (
 func (api *API) ImgProfileView(w http.ResponseWriter, r *http.Request) {
 	buf, _ := ioutil.ReadFile("assets/images/img-avatar.png")
 	w.Write(buf)
-
 }
 
 func (api *API) ImgProfileUpdate(w http.ResponseWriter, r *http.Request) {

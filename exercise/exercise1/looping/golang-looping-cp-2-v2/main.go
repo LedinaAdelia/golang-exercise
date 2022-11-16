@@ -4,7 +4,6 @@ import (
 	"fmt"
 )
 
-// hello World => d_l_r_o_W o_l_l_e_H
 func ReverseString(str string) string {
 	r := []rune(str)
 	var char string
@@ -15,10 +14,6 @@ func ReverseString(str string) string {
 			char += fmt.Sprintf("_%s", string(r[len(r)-i-1]))
 		}
 	}
-	// for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
-	// 	r[i], r[j] = byte(fmt.Sprintf("_%s".r[j])), r[i]
-	// }
-
 	return char
 }
 

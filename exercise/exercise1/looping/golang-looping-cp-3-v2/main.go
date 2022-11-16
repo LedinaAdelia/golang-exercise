@@ -14,11 +14,10 @@ func CountingLetter(text string) int {
 			count++
 		}
 	}
-	return count // TODO: replace this
+	return count
 
 }
 
-// gunakan untuk melakukan debug
 func main() {
 	fmt.Println(CountingLetter("Semangat"))
 }

@@ -25,12 +25,10 @@ func SlurredTalk(words *string) {
 
 		output += a
 	}
-	fmt.Println(output)
 	*words = output
 }
 
 func main() {
-	// bisa dicoba untuk pengujian test case
 	var words string = "Streven is meZ"
 	SlurredTalk(&words)
 	fmt.Println(words)

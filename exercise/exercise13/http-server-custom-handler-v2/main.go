@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"math/rand"
 	"net/http"
 	"time"
@@ -15,14 +16,16 @@ var Quotes = []string{
 	"Nothing is impossible, the word itself says 'I'm possible'! ― Audrey Hepburn",
 }
 
-type QuotesHandler struct{}
+type QuotesHandler struct {
+	Quote int `json:"quote"`
+}
 
 func (qh QuotesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().Unix())
 	reasons := Quotes
-	n := rand.Int() % len(reasons)
-
-	w.Write([]byte(reasons[n]))
+	qh.Quote = rand.Int() % len(reasons)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(reasons[qh.Quote])
 }
 
 func main() {
