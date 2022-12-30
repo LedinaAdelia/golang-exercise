@@ -6,16 +6,14 @@ import (
 )
 
 func EmailInfo(email string) string {
-	r := []rune(email)
 	checkDomain := false
 	checkTLD := false
 	domain := ""
 	TLD := ""
-	for _, v := range r {
+	for _, v := range email {
 		if string(v) == "@" {
 			checkDomain = true
 			checkTLD = false
-			continue
 		} else if string(v) == "." {
 			checkTLD = true
 			checkDomain = false
@@ -27,13 +25,10 @@ func EmailInfo(email string) string {
 			TLD += string(v)
 		}
 	}
-	formattedTLD := strings.Replace(TLD, ".", "", 1)
-	result := fmt.Sprintf("Domain: %s dan TLD: %s", domain, formattedTLD)
-	return result // TODO: replace this,
+	return fmt.Sprintf("Domain: %s dan TLD: %s", domain, strings.Replace(TLD, ".", "", 1))
 
 }
 
-// gunakan untuk melakukan debug
 func main() {
 	fmt.Println(EmailInfo("admin@yahoo.co.id"))
 }

@@ -8,34 +8,33 @@ import (
 
 func ReverseWord(str string) string {
 	arrString := strings.Split(str, " ")
-	var reversedArrString []string
+	var reversedArrString string
 	for i := 0; i < len(arrString); i++ {
-		reversedArrString = append(reversedArrString, reverseString(arrString[i]))
+		if i == len(arrString)-1 {
+			reversedArrString += reverseString(arrString[i])
+		} else {
+			reversedArrString += reverseString(arrString[i]) + " "
+		}
 	}
-	return strings.Join(reversedArrString, " ") // TODO: replace this
+	return reversedArrString
 
 }
 func reverseString(str string) string {
-	r := []rune(str)
 	var char string
-	for i := 0; i < len(r); i++ {
+	for i := 0; i < len(str); i++ {
 		if i == 0 {
-			if unicode.IsUpper(r[i]) == true {
-				char += strings.ToUpper(string(r[len(r)-i-1]))
+			if unicode.IsUpper(rune(str[i])) {
+				char += strings.ToUpper(string(str[len(str)-i-1]))
 			} else {
-				char += strings.ToLower(string(r[len(r)-i-1]))
+				char += strings.ToLower(string(str[len(str)-i-1]))
 			}
 		} else {
-			char += strings.ToLower(string(r[len(r)-i-1]))
+			char += strings.ToLower(string(str[len(str)-i-1]))
 		}
 	}
 	return char
 }
 
-// gunakan untuk melakukan debug
 func main() {
 	fmt.Println(ReverseWord("Aku Sayang Mama"))
-	fmt.Println(ReverseWord("A bird fly to the Sky"))
-	fmt.Println(ReverseWord("ini terlalu mudah"))
-	fmt.Println(ReverseWord("KITA SELALU BERSAMA"))
 }
