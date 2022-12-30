@@ -2,45 +2,25 @@ package main
 
 import (
 	"fmt"
+	"sort"
 )
 
 func FindMin(nums ...int) int {
-	arrData := []int(nums)
-	minNumber := arrData[0]
-	minResult := arrData[0]
-	for i := 1; i < len(arrData)-1; i++ {
-		minData := arrData[i]
-		if minData < minNumber {
-			minNumber = minData
-			minResult = arrData[i]
-		}
-	}
-	return minResult // TODO: replace this
+	sort.Ints(nums)
+	return nums[0]
 }
 
 func FindMax(nums ...int) int {
-	arrData := []int(nums)
-	maxNumber := arrData[0]
-	maxResult := arrData[0]
-	for i := 1; i < len(arrData); i++ {
-		minData := arrData[i]
-		if minData > maxNumber {
-			maxNumber = minData
-			maxResult = arrData[i]
-		}
-	}
-	return maxResult
+	sort.Ints(nums)
+	return nums[len(nums)-1]
 }
 
 func SumMinMax(nums ...int) int {
-	arrData := []int(nums)
-	min := FindMin(arrData...)
-	max := FindMax(arrData...)
-	result := min + max
-	return result // TODO: replace this
+	min := FindMin(nums...)
+	max := FindMax(nums...)
+	return min + max
 }
 
-// gunakan untuk melakukan debug
 func main() {
 	fmt.Println(SumMinMax(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
 }
