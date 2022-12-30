@@ -17,7 +17,6 @@ func MoneyChanges(amount int, products []Product) []int {
 	change := amount - total
 	check := false
 	for change >= 0 && !check {
-		fmt.Println("he")
 		if change >= 1000 {
 			change -= 1000
 			resultChange = append(resultChange, 1000)
