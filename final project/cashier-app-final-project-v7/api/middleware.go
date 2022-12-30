@@ -20,6 +20,7 @@ func (api *API) Auth(next http.Handler) http.Handler {
 			}
 		}
 		sessionToken := c.Value
+
 		sessionFound, err := api.sessionsRepo.CheckExpireToken(sessionToken)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)

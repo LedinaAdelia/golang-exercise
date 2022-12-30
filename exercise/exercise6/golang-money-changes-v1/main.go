@@ -9,70 +9,63 @@ type Product struct {
 }
 
 func MoneyChanges(amount int, products []Product) []int {
-	// nggak rusak see, ternyata kepencet HEHEHEHEHEHEHEH :) <3
-	//apanya yag rusak???
-	//apamyaa????
-	// INI
-	// itu diatas
-	// kepencet capslock, oalaaa iya dekyanggg
-	//
-	//okay, KOKKK CAPSLOCK
-	counts := 0
-	sum := 0
-	for _, a := range products {
-		counts += a.Price + a.Tax
+	resultChange := []int{}
+	total := 0
+	for _, v := range products {
+		total += v.Price + v.Tax
 	}
-	sum = amount - counts
-	hm := []int{}
-	count := false
-	for (sum >= 0) && !count {
-		if sum >= 1000 {
-			sum -= 1000
-			hm = append(hm, 1000)
-		} else if (sum >= 500) && (sum < 1000) {
-			sum -= 500
-			hm = append(hm, 500)
-		} else if (sum >= 200) && (sum < 500) && (sum < 1000) {
-			sum -= 200
-			hm = append(hm, 200)
-		} else if (sum >= 100) && (sum < 200) && (sum < 500) && (sum < 1000) {
-			sum -= 100
-			hm = append(hm, 100)
-		} else if (sum >= 50) && (sum < 100) && (sum < 200) && (sum < 500) && (sum < 1000) {
-			sum -= 50
-			hm = append(hm, 50)
-		} else if (sum >= 20) && (sum < 50) && (sum < 100) && (sum < 200) && (sum < 500) && (sum < 1000) {
-			sum -= 20
-			hm = append(hm, 20)
-		} else if (sum >= 10) && (sum < 20) && (sum < 50) && (sum < 100) && (sum < 200) && (sum < 500) && (sum < 1000) {
-			sum -= 10
-			hm = append(hm, 10)
-		} else if (sum >= 5) && (sum < 10) && (sum < 20) && (sum < 50) && (sum < 100) && (sum < 200) && (sum < 500) && (sum < 1000) {
-			sum -= 5
-			hm = append(hm, 5)
-		} else if (sum >= 1) && (sum < 5) && (sum < 10) && (sum < 20) && (sum < 50) && (sum < 100) && (sum < 200) && (sum < 500) && (sum < 1000) {
-			sum -= 1
-			hm = append(hm, 1)
+	change := amount - total
+	check := false
+	for change >= 0 && !check {
+		fmt.Println("he")
+		if change >= 1000 {
+			change -= 1000
+			resultChange = append(resultChange, 1000)
+		} else if change >= 500 {
+			change -= 500
+			resultChange = append(resultChange, 500)
+		} else if change >= 200 {
+			change -= 200
+			resultChange = append(resultChange, 200)
+		} else if change >= 100 {
+			change -= 100
+			resultChange = append(resultChange, 100)
+		} else if change >= 50 {
+			change -= 50
+			resultChange = append(resultChange, 50)
+		} else if change >= 20 {
+			change -= 20
+			resultChange = append(resultChange, 20)
+		} else if change >= 10 {
+			change -= 10
+			resultChange = append(resultChange, 10)
+		} else if change >= 5 {
+			change -= 5
+			resultChange = append(resultChange, 5)
+		} else if change >= 1 {
+			change -= 1
+			resultChange = append(resultChange, 1)
 		} else {
-			count = true
+			check = true
 		}
 	}
-	return hm
+
+	return resultChange
 }
 
 func main() {
 	cart := []Product{
-		Product{
+		{
 			Name:  "Baju",
-			Price: 20000,
+			Price: 5000,
 			Tax:   500,
 		},
-		Product{
+		{
 			Name:  "Celana",
-			Price: 20000,
-			Tax:   500,
+			Price: 3000,
+			Tax:   300,
 		},
 	}
-	fmt.Println(cart)
-	fmt.Println(MoneyChanges(100000, cart))
+
+	fmt.Println(MoneyChanges(10000, cart))
 }

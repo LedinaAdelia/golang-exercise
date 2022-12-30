@@ -3,14 +3,12 @@ package api
 import (
 	"a21hc3NpZ25tZW50/model"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
 )
 
 func (api *API) AddCart(w http.ResponseWriter, r *http.Request) {
-	log.Println("hehe")
 	if r.Body == http.NoBody {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(model.ErrorResponse{

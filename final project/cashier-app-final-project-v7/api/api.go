@@ -22,7 +22,6 @@ type Page struct {
 func (p Page) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	filepath := filepath.Join("views", p.File)
 	http.ServeFile(w, r, filepath)
-	// http.FileServer(filepath)
 }
 
 func NewAPI(usersRepo repo.UserRepository, sessionsRepo repo.SessionsRepository, products repo.ProductRepository, cartsRepo repo.CartRepository) API {
@@ -37,12 +36,6 @@ func NewAPI(usersRepo repo.UserRepository, sessionsRepo repo.SessionsRepository,
 
 	index := Page{File: "index.html"}
 	mux.Handle("/", api.Get(index))
-
-	// Please create routing for:
-	// - Register page with endpoint `/page/register`, GET method and render `register.html` file on views folder
-	// - Login page with endpoint `/page/login`, GET method and render `login.html` file on views folder
-	// TODO: answer here
-
 	register := Page{File: "register.html"}
 	mux.Handle("/page/register", api.Get(register))
 	login := Page{File: "login.html"}
@@ -55,8 +48,6 @@ func NewAPI(usersRepo repo.UserRepository, sessionsRepo repo.SessionsRepository,
 	mux.Handle("/user/img/profile", api.Get(api.Auth(http.HandlerFunc(api.ImgProfileView))))
 	mux.Handle("/user/img/update-profile", api.Post(api.Auth(http.HandlerFunc(api.ImgProfileUpdate))))
 
-	// Please create routing for endpoint `/cart/add` with POST method, Authentication and handle api.AddCart
-	// TODO: answer here
 	mux.Handle("/cart/add", api.Post(api.Auth(http.HandlerFunc(api.AddCart))))
 
 	return api

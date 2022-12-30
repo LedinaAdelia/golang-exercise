@@ -12,24 +12,11 @@ import (
 )
 
 func (api *API) Register(w http.ResponseWriter, r *http.Request) {
-	// file, _ := api.usersRepo.ReadUser()
-	// cred := model.Credentials{}
-	// json.Unmarshal(file, &cred)
-	if r.Body == http.NoBody {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(model.ErrorResponse{
-			Error: "Username or Password empty",
-		})
-		return
-	}
 	r.ParseForm()
 	creds := model.Credentials{
 		Username: r.FormValue("username"),
 		Password: r.Form.Get("password"),
-	} // TODO: replace this
-
-	// Handle request if creds is empty send response code 400, and message "Username or Password empty"
-	// TODO: answer here
+	}
 	if creds.Username == "" || creds.Password == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(model.ErrorResponse{
@@ -65,22 +52,12 @@ func (api *API) Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func (api *API) Login(w http.ResponseWriter, r *http.Request) {
-	if r.Body == http.NoBody {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(model.ErrorResponse{
-			Error: "Username or Password empty",
-		})
-		return
-	}
-	// Read usernmae and password request with FormValue.
 	r.ParseForm()
 	creds := model.Credentials{
 		Username: r.FormValue("username"),
-		Password: r.FormValue("password"),
-	} // TODO: replace this
+		Password: r.Form.Get("password"),
+	}
 
-	// Handle request if creds is empty send response code 400, and message "Username or Password empty"
-	// TODO: answer here
 	if creds.Username == "" || creds.Password == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(model.ErrorResponse{
@@ -88,6 +65,7 @@ func (api *API) Login(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+
 	err := api.usersRepo.LoginValid(creds)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -95,8 +73,6 @@ func (api *API) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Generate Cookie with Name "session_token", Path "/", Value "uuid generated with github.com/google/uuid", Expires time to 5 Hour.
-	// TODO: answer here
 	id := uuid.New()
 
 	http.SetCookie(w, &http.Cookie{
@@ -110,7 +86,7 @@ func (api *API) Login(w http.ResponseWriter, r *http.Request) {
 		Token:    id.String(),
 		Username: creds.Username,
 		Expiry:   time.Now().Add(5 * time.Hour),
-	} // TODO: replace this
+	}
 
 	err = api.sessionsRepo.AddSessions(session)
 	if err != nil {
@@ -124,14 +100,12 @@ func (api *API) Login(w http.ResponseWriter, r *http.Request) {
 
 func (api *API) Logout(w http.ResponseWriter, r *http.Request) {
 	c, _ := r.Cookie("session_token")
-	sessionToken := c.Value
-	api.sessionsRepo.DeleteSessions(sessionToken)
+	api.sessionsRepo.DeleteSessions(c.Value)
 
 	http.SetCookie(w, &http.Cookie{
 		Name:   "",
 		Value:  "",
 		MaxAge: 0,
-		Path:   "/",
 	})
 
 	filepath := path.Join("views", "login.html")

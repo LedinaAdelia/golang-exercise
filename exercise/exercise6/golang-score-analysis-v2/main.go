@@ -6,10 +6,6 @@ import (
 	"strconv"
 )
 
-// func Add(a, b int) int {
-// 	return 0
-// }
-
 type School struct {
 	Name    string
 	Address string
