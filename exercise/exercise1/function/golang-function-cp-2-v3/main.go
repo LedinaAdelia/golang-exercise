@@ -6,35 +6,25 @@ import (
 )
 
 func CountVowelConsonant(str string) (int, int, bool) {
-	arrString := strings.Split(str, "")
-	countVok := 0
-	countKon := 0
-	konEmpty := false
-	for i := 0; i < len(arrString); i++ {
-		char := strings.ToUpper(arrString[i])
-		if char == "A" || char == "I" || char == "U" || char == "E" || char == "O" {
-			countVok++
-		} else if char == " " {
-			continue
-		} else {
-			countKon++
+	vowel := 0
+	consonant := 0
+
+	splitChar := strings.Split(str, "")
+	for _, v := range splitChar {
+		checkChar := strings.ToUpper(v)
+		if strings.Contains("AIUEO", checkChar) {
+			vowel++
+		} else if !strings.Contains(" ,", checkChar) {
+			consonant++
 		}
 	}
-	if countVok == 0 {
-		konEmpty = true
-	} else {
-		konEmpty = false
-	}
 
-	if strings.Contains(str, ",") {
-		countKon--
+	if vowel == 0 {
+		return vowel, consonant, true
 	}
-
-	return countVok, countKon, konEmpty // TODO: replace this
+	return vowel, consonant, false
 }
 
-// gunakan untuk melakukan debug
 func main() {
-	fmt.Println(CountVowelConsonant("Hidup Itu Indah"))
-	fmt.Println(CountVowelConsonant("SEMANGAT PAGI, itu kata orang yang baru datang ke rumahku"))
+	fmt.Println(CountVowelConsonant("bbbbb, ccccc"))
 }
